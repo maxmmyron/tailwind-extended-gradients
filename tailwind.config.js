@@ -36,47 +36,77 @@ export default {
       315: '315deg',
       330: '330deg',
       345: '345deg',
-
+    },
+    backgroundImage: {
+      "none": "none",
     },
   },
-  plugins: [plugin(function({addUtilities, matchUtilities, theme}) {
-    matchUtilities({
-      [`bg-gradient-to`]: (val) => {
-        return {
-          '--tw-color-interpolation-method': 'oklab',
-          'background-image': `linear-gradient(${val} in var(--tw-color-interpolation-method), var(--tw-gradient-stops,))`,
+  corePlugins: {
+    backgroundImage: false,
+  },
+  plugins: [
+    plugin(function({addUtilities, matchUtilities, theme }) {
+      // Because we disabled the backgroundImage core plugin, we need to re-implement background image utilities
+      matchUtilities({
+        [`bg`]: (val) => {
+          return {
+            'background-image': val,
+          }
         }
-      },
-    },
-    {
-      values: theme('gradientDirection'),
-    });
-
-    const rectSpaces = ["srgb", "srgb-linear", "lab", "oklab", "xyz"];
-    const cylSpaces = ["hsl", "hwb", "lch", "oklch"];
-
-    // Add classes for default rectangular and cylindrical spaces
-    for (let space of [...rectSpaces, ...cylSpaces]) {
-      // Gradients w/ rectangular color space interpolation
-      addUtilities({
-        [`.bg-interpolate-${space}`]: {
-          '--tw-color-interpolation-method': space,
-        },
+      },{
+        values: theme('backgroundImage'),
+        type: "url"
       });
-    }
 
-    // Add classes for cylindrical spaces that specify the interpolation method
-    for (let space of cylSpaces) {
-      // with specified interpolation method
-      const interpMethods = ["longer", "shorter", "increasing", "decreasing"];
-      for(let interpMethod of interpMethods) {
+      // add utilities for gradient directions (this essentially overrides existing tailwind bg-gradient-to-* utilities)
+      matchUtilities({
+          [`bg-gradient-to`]: (val) => {
+            return {
+              'background-image': `linear-gradient(${val} var(--tw-color-interpolation-method, ), var(--tw-gradient-stops,))`,
+            }
+          },
+        },
+      {
+        values: theme('gradientDirection'),
+      });
+
+      const rectSpaces = ["srgb", "srgb-linear", "lab", "oklab", "xyz"];
+      const cylSpaces = ["hsl", "hwb", "lch", "oklch"];
+
+      // Add classes for default rectangular and cylindrical spaces
+      for (let space of [...rectSpaces, ...cylSpaces]) {
+        // Gradients w/ rectangular color space interpolation
         addUtilities({
-          [`.bg-interpolate-${space}\\/${interpMethod}`]: {
-            '--tw-color-interpolation-method': `${space} ${interpMethod} hue`,
+          [`.bg-interpolate-${space}`]: {
+            '--tw-color-interpolation-method': `in ${space}`,
+          },
+          // firefox specific: disable interpolation
+          [`@supports (-moz-appearance:none)`]: {
+            [`.bg-interpolate-${space}`]: {
+              '--tw-color-interpolation-method': "",
+            },
           },
         });
       }
-    }
+
+      // Add classes for cylindrical spaces that specify the interpolation method
+      for (let space of cylSpaces) {
+        // with specified interpolation method
+        const interpMethods = ["longer", "shorter", "increasing", "decreasing"];
+        for(let interpMethod of interpMethods) {
+          addUtilities({
+            [`.bg-interpolate-${space}\\/${interpMethod}`]: {
+              '--tw-color-interpolation-method': `in ${space} ${interpMethod} hue`,
+            },
+            // firefox specific: disable interpolation
+            [`@supports (-moz-appearance:none)`]: {
+              [`.bg-interpolate-${space}\\/${interpMethod}`]: {
+                '--tw-color-interpolation-method': "",
+              },
+            },
+          });
+        }
+      }
     }
   )],
 }
