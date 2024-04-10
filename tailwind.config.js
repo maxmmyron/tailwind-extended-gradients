@@ -45,30 +45,35 @@ export default {
     backgroundImage: false,
   },
   plugins: [
-    plugin(function({addUtilities, matchUtilities, theme }) {
+    plugin(function ({ addUtilities, matchUtilities, theme }) {
       // Because we disabled the backgroundImage core plugin, we need to re-implement background image utilities
-      matchUtilities({
-        [`bg`]: (val) => {
-          return {
-            'background-image': val,
+      matchUtilities(
+        {
+          [`bg`]: (val) => {
+            return {
+              'background-image': val,
+            }
           }
+        },
+        {
+          values: theme('backgroundImage'),
+          type: ["url", "image"],
         }
-      },{
-        values: theme('backgroundImage'),
-        type: "url"
-      });
+      );
 
       // add utilities for gradient directions (this essentially overrides existing tailwind bg-gradient-to-* utilities)
-      matchUtilities({
+      matchUtilities(
+        {
           [`bg-gradient-to`]: (val) => {
             return {
               'background-image': `linear-gradient(${val} var(--tw-color-interpolation-method, ), var(--tw-gradient-stops,))`,
             }
           },
         },
-      {
-        values: theme('gradientDirection'),
-      });
+        {
+          values: theme('gradientDirection'),
+        }
+      );
 
       const rectSpaces = ["srgb", "srgb-linear", "lab", "oklab", "xyz"];
       const cylSpaces = ["hsl", "hwb", "lch", "oklch"];
@@ -76,38 +81,43 @@ export default {
       // Add classes for default rectangular and cylindrical spaces
       for (let space of [...rectSpaces, ...cylSpaces]) {
         // Gradients w/ rectangular color space interpolation
-        addUtilities({
-          [`.bg-interpolate-${space}`]: {
-            '--tw-color-interpolation-method': `in ${space}`,
-          },
-          // firefox specific: disable interpolation
-          [`@supports (-moz-appearance:none)`]: {
+        addUtilities(
+          {
             [`.bg-interpolate-${space}`]: {
-              '--tw-color-interpolation-method': "",
+              '--tw-color-interpolation-method': `in ${space}`,
             },
-          },
-        });
+            // firefox specific: disable interpolation
+            [`@supports (-moz-appearance:none)`]: {
+              [`.bg-interpolate-${space}`]: {
+                '--tw-color-interpolation-method': "",
+              },
+            },
+          }
+        );
       }
 
       // Add classes for cylindrical spaces that specify the interpolation method
       for (let space of cylSpaces) {
         // with specified interpolation method
         const interpMethods = ["longer", "shorter", "increasing", "decreasing"];
-        for(let interpMethod of interpMethods) {
-          addUtilities({
-            [`.bg-interpolate-${space}\\/${interpMethod}`]: {
-              '--tw-color-interpolation-method': `in ${space} ${interpMethod} hue`,
-            },
-            // firefox specific: disable interpolation
-            [`@supports (-moz-appearance:none)`]: {
+        for (let interpMethod of interpMethods) {
+          addUtilities(
+            {
               [`.bg-interpolate-${space}\\/${interpMethod}`]: {
-                '--tw-color-interpolation-method': "",
+                '--tw-color-interpolation-method': `in ${space} ${interpMethod} hue`,
               },
-            },
-          });
+              // firefox specific: disable interpolation
+              [`@supports (-moz-appearance:none)`]: {
+                [`.bg-interpolate-${space}\\/${interpMethod}`]: {
+                  '--tw-color-interpolation-method': "",
+                },
+              },
+            }
+          );
         }
       }
     }
-  )],
+    )
+  ],
 }
 
