@@ -38,7 +38,7 @@ export default {
       345: '345deg',
     },
     backgroundImage: {
-      "none": "none",
+      none: "none",
     },
   },
   corePlugins: {
