@@ -75,11 +75,11 @@ export default {
         }
       );
 
-      const rectSpaces = ["srgb", "srgb-linear", "lab", "oklab", "xyz"];
-      const cylSpaces = ["hsl", "hwb", "lch", "oklch"];
+      const rectangularSpaces = ["srgb", "srgb-linear", "lab", "oklab", "xyz"];
+      const polarSpaces = ["hsl", "hwb", "lch", "oklch"];
 
       // Add classes for default rectangular and cylindrical spaces
-      for (let space of [...rectSpaces, ...cylSpaces]) {
+      for (const space of [...rectangularSpaces, ...polarSpaces]) {
         // Gradients w/ rectangular color space interpolation
         addUtilities(
           {
@@ -97,10 +97,10 @@ export default {
       }
 
       // Add classes for cylindrical spaces that specify the interpolation method
-      for (let space of cylSpaces) {
+      for (const space of polarSpaces) {
         // with specified interpolation method
-        const interpMethods = ["longer", "shorter", "increasing", "decreasing"];
-        for (let interpMethod of interpMethods) {
+        const hueInterpMethod = ["longer", "shorter", "increasing", "decreasing"];
+        for (const interpMethod of hueInterpMethod) {
           addUtilities(
             {
               [`.bg-interpolate-${space}\\/${interpMethod}`]: {
