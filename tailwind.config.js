@@ -1,4 +1,4 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require("tailwindcss/defaultTheme")
 const plugin = require("tailwindcss/plugin")
 
 /** @type {import('tailwindcss').Config} */
@@ -6,15 +6,15 @@ export default {
   content: ["./src/**/*.{html,js,ts,svelte}"],
   theme: {
     gradientDirection: ({ theme }) => ({
-      t: 'to top',
-      tr: 'to top right',
-      r: 'to right',
-      br: 'to bottom right',
-      b: 'to bottom',
-      bl: 'to bottom left',
-      l: 'to left',
-      tl: 'to top left',
-      ...theme('rotate'),
+      t: "to top",
+      tr: "to top right",
+      r: "to right",
+      br: "to bottom right",
+      b: "to bottom",
+      bl: "to bottom left",
+      l: "to left",
+      tl: "to top left",
+      ...theme("rotate"),
     }),
     backgroundImage: {
       none: "none",
@@ -31,13 +31,13 @@ export default {
         {
           "bg": (val) => {
             return {
-              'background-image': val,
+              "background-image": val,
             }
           }
         },
         {
-          values: theme('backgroundImage'),
-          type: ["url", "image"],
+          values: theme("backgroundImage"),
+          type: ["image", "url"],
         }
       );
 
@@ -46,12 +46,12 @@ export default {
         {
           "bg-gradient-to": (val) => {
             return {
-              'background-image': `linear-gradient(${val} var(--tw-color-interpolation-method, ), var(--tw-gradient-stops,))`,
+              "background-image": `linear-gradient(${val} var(--tw-color-interpolation-method, ), var(--tw-gradient-stops,))`,
             }
           },
         },
         {
-          values: theme('gradientDirection'),
+          values: theme("gradientDirection"),
         }
       );
 
@@ -64,7 +64,7 @@ export default {
         addUtilities({
           [`@supports (background-image: linear-gradient(in ${space}, red, red))`]: {
             [`.bg-interpolate-${space}`]: {
-              '--tw-color-interpolation-method': `in ${space}`,
+              "--tw-color-interpolation-method": `in ${space}`,
             },
           }
         });
@@ -78,7 +78,7 @@ export default {
           addUtilities({
             [`@supports (background-image: linear-gradient(in ${space}, red, red))`]: {
               [`.bg-interpolate-${space}\\/${interpMethod}`]: {
-                '--tw-color-interpolation-method': `in ${space} ${interpMethod} hue`,
+                "--tw-color-interpolation-method": `in ${space} ${interpMethod} hue`,
               },
             }
           });
