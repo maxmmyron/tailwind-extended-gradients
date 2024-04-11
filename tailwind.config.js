@@ -19,14 +19,26 @@ export default {
     backgroundImage: {
       none: "none",
     },
+    /*
+     * FIXME: we can't override this because <angle> is not a supported type
+     * in matchUtilities... why???????? it's available internally, but
+     * isn't exposed to the plugin API :(
+     */
+    // extend: {
+    //   gradientColorStopPositions: ({ theme }) => ({
+    //     ...theme("rotate"),
+    //   }),
+    // },
   },
   corePlugins: {
     backgroundImage: false,
-
   },
   plugins: [
     plugin(function ({ addUtilities, matchUtilities, theme }) {
-      // Because we disabled the backgroundImage core plugin, we need to re-implement background image utilities
+      // --------------------------------
+      // Reimplement disabled core plugins
+
+      // reimplement backgroundImage core plugin
       matchUtilities(
         {
           "bg": (val) => {
@@ -41,7 +53,7 @@ export default {
         }
       );
 
-      // add utilities for gradient directions (this essentially overrides existing tailwind bg-gradient-to-* utilities)
+      // add dynamic utilities for angle-based gradient directions (this essentially overrides existing tailwind bg-gradient-to-* utilities)
       matchUtilities(
         {
           "bg-gradient-to": (val) => {
@@ -52,6 +64,23 @@ export default {
         },
         {
           values: theme("gradientDirection"),
+        }
+      );
+
+      // add static utilities for radial and conic gradients
+      addUtilities(
+        {
+          ".bg-gradient-radial": {
+            "--tw-gradient-x-position": "center",
+            "--tw-gradient-y-position": "center",
+            "background-image": "radial-gradient(at var(--tw-gradient-x-position) var(--tw-gradient-x-position) var(--tw-color-interpolation-method, ), var(--tw-gradient-stops))"
+          },
+
+          ".bg-gradient-conic": {
+            "--tw-gradient-x-position": "center",
+            "--tw-gradient-y-position": "center",
+            "background-image": "conic-gradient(at var(--tw-gradient-x-position) var(--tw-gradient-x-position) var(--tw-color-interpolation-method, ), var(--tw-gradient-stops))"
+          }
         }
       );
 
