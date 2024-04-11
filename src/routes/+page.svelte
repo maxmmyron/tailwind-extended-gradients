@@ -79,3 +79,15 @@
 >
   def.
 </div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-conic bg-interpolate-oklch/longer from-red-500 to-blue-500"
+>
+  def.
+</div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial bg-interpolate-oklch/longer from-red-500 to-blue-500"
+>
+  def.
+</div>
