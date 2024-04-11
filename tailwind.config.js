@@ -81,19 +81,13 @@ export default {
       // Add classes for default rectangular and cylindrical spaces
       for (const space of [...rectangularSpaces, ...polarSpaces]) {
         // Gradients w/ rectangular color space interpolation
-        addUtilities(
-          {
+        addUtilities({
+          [`@supports (background-image: linear-gradient(in ${space}, red, red))`]: {
             [`.bg-interpolate-${space}`]: {
               '--tw-color-interpolation-method': `in ${space}`,
             },
-            // firefox specific: disable interpolation
-            [`@supports (-moz-appearance:none)`]: {
-              [`.bg-interpolate-${space}`]: {
-                '--tw-color-interpolation-method': "",
-              },
-            },
           }
-        );
+        });
       }
 
       // Add classes for cylindrical spaces that specify the interpolation method
@@ -101,23 +95,16 @@ export default {
         // with specified interpolation method
         const hueInterpMethod = ["longer", "shorter", "increasing", "decreasing"];
         for (const interpMethod of hueInterpMethod) {
-          addUtilities(
-            {
+          addUtilities({
+            [`@supports (background-image: linear-gradient(in ${space}, red, red))`]: {
               [`.bg-interpolate-${space}\\/${interpMethod}`]: {
                 '--tw-color-interpolation-method': `in ${space} ${interpMethod} hue`,
               },
-              // firefox specific: disable interpolation
-              [`@supports (-moz-appearance:none)`]: {
-                [`.bg-interpolate-${space}\\/${interpMethod}`]: {
-                  '--tw-color-interpolation-method': "",
-                },
-              },
             }
-          );
+          });
         }
       }
-    }
-    )
+    })
   ],
 }
 
