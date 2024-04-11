@@ -29,7 +29,7 @@ export default {
       // Because we disabled the backgroundImage core plugin, we need to re-implement background image utilities
       matchUtilities(
         {
-          [`bg`]: (val) => {
+          "bg": (val) => {
             return {
               'background-image': val,
             }
@@ -44,7 +44,7 @@ export default {
       // add utilities for gradient directions (this essentially overrides existing tailwind bg-gradient-to-* utilities)
       matchUtilities(
         {
-          [`bg-gradient-to`]: (val) => {
+          "bg-gradient-to": (val) => {
             return {
               'background-image': `linear-gradient(${val} var(--tw-color-interpolation-method, ), var(--tw-gradient-stops,))`,
             }
