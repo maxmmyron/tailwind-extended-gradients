@@ -101,12 +101,12 @@ export default {
           ".bg-gradient-radial": {
             "--tw-gradient-x-position": "center",
             "--tw-gradient-y-position": "center",
-            "background-image": "radial-gradient(at var(--tw-gradient-x-position) var(--tw-gradient-x-position) var(--tw-color-interpolation-method, ), var(--tw-gradient-stops))"
+            "background-image": "radial-gradient(at var(--tw-gradient-x-position) var(--tw-gradient-y-position) var(--tw-color-interpolation-method, ), var(--tw-gradient-stops))"
           },
           ".bg-gradient-conic": {
             "--tw-gradient-x-position": "center",
             "--tw-gradient-y-position": "center",
-            "background-image": "conic-gradient(at var(--tw-gradient-x-position) var(--tw-gradient-x-position) var(--tw-color-interpolation-method, ), var(--tw-gradient-stops))"
+            "background-image": "conic-gradient(at var(--tw-gradient-x-position) var(--tw-gradient-y-position) var(--tw-color-interpolation-method, ), var(--tw-gradient-stops))"
           }
         }
       );
@@ -114,9 +114,20 @@ export default {
       matchUtilities(
         {
           "bg-gradient-pos": (val) => {
+            console.log(val)
+            const splitIdx = val.indexOf(" ");
+            console.log(splitIdx)
+
+            let x = val;
+            let y = val;
+            if (splitIdx > -1) {
+              x = val.substring(0, splitIdx);
+              y = val.substring(splitIdx + 1);
+            }
+
             return {
-              "--tw-gradient-x-position": val,
-              "--tw-gradient-y-position": val,
+              "--tw-gradient-x-position": x,
+              "--tw-gradient-y-position": y,
             }
           },
           "bg-gradient-pos-x": (val) => {
