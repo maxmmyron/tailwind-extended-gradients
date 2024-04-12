@@ -19,6 +19,34 @@ export default {
     backgroundImage: {
       none: "none",
     },
+    gradientPosition: {
+      center: "center",
+      left: "left",
+      right: "right",
+      top: "top",
+      bottom: "bottom",
+      "5%": "5%",
+      "10%": "10%",
+      "15%": "15%",
+      "20%": "20%",
+      "25%": "25%",
+      "30%": "30%",
+      "35%": "35%",
+      "40%": "40%",
+      "45%": "45%",
+      "50%": "50%",
+      "55%": "55%",
+      "60%": "60%",
+      "65%": "65%",
+      "70%": "70%",
+      "75%": "75%",
+      "80%": "80%",
+      "85%": "85%",
+      "90%": "90%",
+      "95%": "95%",
+      "100%": "100%",
+    }
+
     /*
      * FIXME: we can't override this because <angle> is not a supported type
      * in matchUtilities... why???????? it's available internally, but
@@ -75,12 +103,36 @@ export default {
             "--tw-gradient-y-position": "center",
             "background-image": "radial-gradient(at var(--tw-gradient-x-position) var(--tw-gradient-x-position) var(--tw-color-interpolation-method, ), var(--tw-gradient-stops))"
           },
-
           ".bg-gradient-conic": {
             "--tw-gradient-x-position": "center",
             "--tw-gradient-y-position": "center",
             "background-image": "conic-gradient(at var(--tw-gradient-x-position) var(--tw-gradient-x-position) var(--tw-color-interpolation-method, ), var(--tw-gradient-stops))"
           }
+        }
+      );
+
+      matchUtilities(
+        {
+          "bg-gradient-pos": (val) => {
+            return {
+              "--tw-gradient-x-position": val,
+              "--tw-gradient-y-position": val,
+            }
+          },
+          "bg-gradient-pos-x": (val) => {
+            return {
+              "--tw-gradient-x-position": val,
+            }
+          },
+          "bg-gradient-pos-y": (val) => {
+            return {
+              "--tw-gradient-y-position": val,
+            }
+          },
+        },
+        {
+          values: theme("gradientPosition"),
+          type: ["percentage", "length", "position"],
         }
       );
 
