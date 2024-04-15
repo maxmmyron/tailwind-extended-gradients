@@ -5,6 +5,9 @@ const plugin = require("tailwindcss/plugin")
 export default {
   content: ["./src/**/*.{html,js,ts,svelte}"],
   theme: {
+    backgroundImage: {
+      none: "none",
+    },
     gradientDirection: ({ theme }) => ({
       t: "to top",
       tr: "to top right",
@@ -16,15 +19,10 @@ export default {
       tl: "to top left",
       ...theme("rotate"),
     }),
-    backgroundImage: {
-      none: "none",
-    },
-    gradientPosition: {
-      center: "center",
-      left: "left",
-      right: "right",
-      top: "top",
-      bottom: "bottom",
+    gradientPosition: ({ theme }) => ({
+      ...theme("percentage"),
+    }),
+    percentage: {
       "1/2": "50%",
       "1/3": "33.333333%",
       "2/3": "66.666667%",
@@ -53,6 +51,12 @@ export default {
       "11/12": "91.66667%",
       "full": "100%"
     },
+    radialGradientSize: {
+      "closest-side": "closest-side",
+      "farthest-side": "farthest-side",
+      "closest-corner": "closest-corner",
+      "farthest-corner": "farthest-corner",
+    }
 
     /*
      * FIXME: we can't override this because <angle> is not a supported type
@@ -108,22 +112,47 @@ export default {
           ".bg-gradient-radial": {
             "--tw-gradient-x-position": "center",
             "--tw-gradient-y-position": "center",
-            "background-image": "radial-gradient(at var(--tw-gradient-x-position) var(--tw-gradient-y-position) var(--tw-color-interpolation-method, ), var(--tw-gradient-stops))"
+            "--tw-radial-shape": "ellipse",
+            "--tw-radial-size": "farthest-corner",
+            "background-image": "radial-gradient(var(--tw-radial-shape) var(--tw-radial-size) at var(--tw-gradient-x-position) var(--tw-gradient-y-position) var(--tw-color-interpolation-method, ), var(--tw-gradient-stops))"
           },
           ".bg-gradient-conic": {
             "--tw-gradient-x-position": "center",
             "--tw-gradient-y-position": "center",
-            "background-image": "conic-gradient(at var(--tw-gradient-x-position) var(--tw-gradient-y-position) var(--tw-color-interpolation-method, ), var(--tw-gradient-stops))"
+            "--tw-conic-angle": "0deg",
+            "background-image": "conic-gradient(from var(--tw-conic-angle) at var(--tw-gradient-x-position) var(--tw-gradient-y-position) var(--tw-color-interpolation-method, ), var(--tw-gradient-stops))"
           }
         }
       );
 
+      // -------------------------------------------
+      // radial-gradient/conic-gradient center position
+
+      // CASE 1: two-component syntax
+      const corners = [
+        ["t", "center top"],
+        ["tr", "right top"],
+        ["r", "right center"],
+        ["br", "right bottom"],
+        ["b", "center bottom"],
+        ["bl", "left bottom"],
+        ["l", "left center"],
+        ["tl", "left top"]
+      ];
+
+      for (const [shorthand, value] of corners) {
+        addUtilities({
+          [`.bg-gradient-pos-${shorthand}`]: {
+            "--tw-gradient-x-position": value.split(" ")[0],
+            "--tw-gradient-y-position": value.split(" ")[1],
+          }
+        });
+      }
+
       matchUtilities(
         {
           "bg-gradient-pos": (val) => {
-            console.log(val)
             const splitIdx = val.indexOf(" ");
-            console.log(splitIdx)
 
             let x = val;
             let y = val;
@@ -137,11 +166,52 @@ export default {
               "--tw-gradient-y-position": y,
             }
           },
+        },
+        {
+          type: "any",
+          values: theme("gradientPosition"),
+        }
+      );
+
+      // CASE 1: one-component syntax: X directions
+      const xEdges = [["l", "left"], ["r", "right"]];
+
+      for (const [shorthand, value] of xEdges) {
+        addUtilities({
+          [`.bg-gradient-pos-x-${shorthand}`]: {
+            "--tw-gradient-x-position": value
+          }
+        });
+      }
+
+      matchUtilities(
+        {
           "bg-gradient-pos-x": (val) => {
             return {
               "--tw-gradient-x-position": val,
             }
           },
+        },
+        {
+          type: "any",
+          values: theme("gradientPosition"),
+        }
+      );
+
+      // CASE 3: one-component: syntax: Y directions
+
+      const yEdges = [["t", "top"], ["b", "bottom"]];
+
+      for (const [shorthand, value] of yEdges) {
+        addUtilities({
+          [`.bg-gradient-pos-y-${shorthand}`]: {
+            "--tw-gradient-y-position": value
+          }
+        });
+      }
+
+      matchUtilities(
+        {
           "bg-gradient-pos-y": (val) => {
             return {
               "--tw-gradient-y-position": val,
@@ -149,8 +219,48 @@ export default {
           },
         },
         {
+          type: "any",
           values: theme("gradientPosition"),
-          type: ["percentage", "length", "position"],
+        }
+      );
+
+      // radial-gradient <radial-shape>
+      addUtilities(
+        {
+          ".radial-grad-circle": {
+            "--tw-radial-shape": "circle",
+          },
+          ".radial-grad-ellipse": {
+            "--tw-radial-shape": "ellipse",
+          }
+        }
+      );
+
+      // radial-gradient <radial-size>
+      matchUtilities(
+        {
+          "radial-grad-extent": (val) => {
+            return {
+              "--tw-radial-size": val,
+            }
+          }
+        },
+        {
+          values: theme("radialGradientSize"),
+        }
+      );
+
+      // conic-gradient angle
+      matchUtilities(
+        {
+          "conic-grad-angle": (val) => {
+            return {
+              "--tw-conic-angle": val,
+            }
+          }
+        },
+        {
+          values: theme("rotate"),
         }
       );
 

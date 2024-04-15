@@ -97,3 +97,77 @@
 >
   def.
 </div>
+
+<hr />
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial bg-gradient-pos-1/4 gradient-extent-closest-side from-red-500 to-blue-500"
+>
+  def. e
+</div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial bg-gradient-pos-1/4 gradient-extent-farthest-side from-red-500 to-blue-500"
+>
+  def. e
+</div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial bg-gradient-pos-1/4 gradient-extent-closest-corner from-red-500 to-blue-500"
+>
+  def. e
+</div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial bg-gradient-pos-1/4 gradient-extent-farthest-corner from-red-500 to-blue-500"
+>
+  def. e
+</div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial bg-gradient-pos-1/4 gradient-extent-[10rem_10rem] from-red-500 to-blue-500"
+>
+  def. e
+</div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial bg-gradient-pos- gradient-extent-[20%_100%] from-red-500 to-blue-500"
+>
+  def. e
+</div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial bg-gradient-pos-1/4 gradient-shape-circle gradient-extent-closest-side from-red-500 to-blue-500"
+>
+  def. c
+</div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial bg-gradient-pos-1/4 gradient-shape-circle gradient-extent-farthest-side from-red-500 to-blue-500"
+>
+  def. c
+</div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial bg-gradient-pos-1/4 gradient-shape-circle gradient-extent-closest-corner from-red-500 to-blue-500"
+>
+  def. c
+</div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial bg-gradient-pos-1/4 gradient-shape-circle gradient-extent-farthest-corner from-red-500 to-blue-500"
+>
+  def. c
+</div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial gradient-shape-circle bg-gradient-pos-1/4 gradient-extent-[10rem] from-red-500 to-blue-500"
+>
+  def. e
+</div>
+
+<div
+  class="w-1/2 h-48 bg-gradient-radial gradient-shape-circle bg-gradient-pos-1/4 gradient-extent-[5%_5%] from-red-500 to-blue-500"
+>
+  def. z
+</div>
